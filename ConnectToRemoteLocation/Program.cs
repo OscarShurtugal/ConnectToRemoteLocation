@@ -13,43 +13,63 @@ namespace ConnectToRemoteLocation
     {
         static void Main(string[] args)
         {
-            //NetCredentialusage();
-            string command = @"NET USE * /delete /y";
 
-            //command = "NET USE " + @"Full route to shared folder" + " /user:" + @"username" + " " + "password";
-            int timeout = 5000;
-            var processInfo = new ProcessStartInfo("cmd.exe", "/C " + command)
-            {
-                CreateNoWindow = true,
-                UseShellExecute = false,
-                WorkingDirectory = "C:\\",
-            };
-
-            //CMD RETURN CODES: 
-            /*
-             *       0	The operation completed successfully.
-                     1	Incorrect function.
-                     2	The system cannot find the file specified.
-                            
-             * */
-
-            var process = Process.Start(processInfo);
-            process.WaitForExit(timeout);
-            var exitCode = process.ExitCode;
-            process.Close();
-            //return exitCode;
-            if(exitCode == 0 )
-                //Console.WriteLine(exitCode.ToString());
-                Console.WriteLine("Exito");
-            else
-                Console.WriteLine("Fracaso");
-            //ExecuteCommand(command, 5000);
-
-
+            EraseAllActiveConnections();
+            ConnectToRemoteServerLocation("server", "user", "password");
             Console.ReadLine();
 
         }
 
+        public static string ConnectToRemoteServerLocation(string rutaDeConexion, string username, string password)
+        {
+            string command = "NET USE " + rutaDeConexion + " /user:" + username + " " + password;
+
+            int result = ExecuteCommand(command);
+            switch (result)
+            {
+
+                case 0:
+                    return "Comando Exitoso";
+                    break;
+                case 1:
+                    return "Función Incorrecta";
+                    break;
+                case 2:
+                    return "El sistema no pudo encontrar la ruta especificada";
+                    break;
+                default:
+                    return "no ejecutado";
+                    break;
+            }
+
+        }
+
+
+
+        public static string EraseAllActiveConnections()
+        {
+            string command = @"NET USE * /delete /y";
+
+            int result = ExecuteCommand(command);
+            switch (result)
+            {
+                
+                case 0:
+                    return "Comando Exitoso"; 
+                    break;
+                case 1:
+                    return "Función Incorrecta"; 
+                    break;
+                case 2:
+                    return "El sistema no pudo encontrar la ruta especificada";
+                    break;
+                default:
+                    return "no ejecutado";
+                    break;
+            }
+
+
+        }
 
         public static void SaveACopyfileToServer(string filePath, string savePath)
         {
@@ -62,21 +82,21 @@ namespace ConnectToRemoteLocation
                 filenameToSave = "\\" + filenameToSave;
 
             var command = "NET USE " + directory + " /delete";
-            ExecuteCommand(command, 5000);
+            ExecuteCommand(command);
 
             command = "NET USE " + directory + " /user:" + username + " " + password;
-            ExecuteCommand(command, 5000);
+            ExecuteCommand(command);
 
             command = " copy \"" + filePath + "\"  \"" + directory + filenameToSave + "\"";
 
-            ExecuteCommand(command, 5000);
+            ExecuteCommand(command);
 
 
             command = "NET USE " + directory + " /delete";
-            ExecuteCommand(command, 5000);
+            ExecuteCommand(command);
         }
 
-        public static int ExecuteCommand(string command, int timeout)
+        public static int ExecuteCommand(string command)
         {
             var processInfo = new ProcessStartInfo("cmd.exe", "/C " + command)
             {
@@ -86,7 +106,7 @@ namespace ConnectToRemoteLocation
             };
 
             var process = Process.Start(processInfo);
-            process.WaitForExit(timeout);
+            process.WaitForExit(8000);
             var exitCode = process.ExitCode;
             process.Close();
             return exitCode;
