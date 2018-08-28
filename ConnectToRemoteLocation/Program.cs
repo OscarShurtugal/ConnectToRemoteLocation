@@ -35,7 +35,7 @@ namespace ConnectToRemoteLocation
                     return "Función Incorrecta";
                     break;
                 case 2:
-                    return "El sistema no pudo encontrar la ruta especificada";
+                    return "Hay un dato erróneo";
                     break;
                 default:
                     return "no ejecutado";
@@ -61,7 +61,7 @@ namespace ConnectToRemoteLocation
                     return "Función Incorrecta"; 
                     break;
                 case 2:
-                    return "El sistema no pudo encontrar la ruta especificada";
+                    return "Hay un dato erróneo";
                     break;
                 default:
                     return "no ejecutado";
