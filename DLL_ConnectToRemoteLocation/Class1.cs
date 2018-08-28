@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DLL_ConnectToRemoteLocation
 {
-    public class Class1
+    public class NetworkFunctionality
     {
         public string ConnectToRemoteServerLocation(string rutaDeConexion, string username, string password)
         {
