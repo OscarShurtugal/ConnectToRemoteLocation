@@ -69,7 +69,7 @@ namespace DLL_ConnectToRemoteLocation
             };
 
             var process = Process.Start(processInfo);
-            process.WaitForExit(8000);
+            process.WaitForExit();
             var exitCode = process.ExitCode;
             process.Close();
             return exitCode;

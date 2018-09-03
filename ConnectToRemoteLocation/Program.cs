@@ -14,8 +14,8 @@ namespace ConnectToRemoteLocation
         static void Main(string[] args)
         {
 
-            EraseAllActiveConnections();
-            ConnectToRemoteServerLocation("server", "user", "password");
+            Console.WriteLine(  EraseAllActiveConnections());
+            Console.WriteLine( ConnectToRemoteServerLocation(@"\\", @"user", "pass"));
             Console.ReadLine();
 
         }
@@ -106,7 +106,7 @@ namespace ConnectToRemoteLocation
             };
 
             var process = Process.Start(processInfo);
-            process.WaitForExit(8000);
+            process.WaitForExit();
             var exitCode = process.ExitCode;
             process.Close();
             return exitCode;
